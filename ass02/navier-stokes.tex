@@ -1,0 +1,155 @@
+%\documentclass{ctexart} 使用 ctex 字体
+\documentclass[nofonts]{ctexart} % 不用 ctex 字体
+
+\usepackage{xltxtra} % 让 xelatex 支持UTF
+\usepackage{graphicx} % 图形库
+\usepackage{amsmath} % AMS 的数学符号
+\usepackage{amsfonts}
+\usepackage{tikz}
+% 自定义字体
+% 如果使用 ctex 字体，注释掉以下部分.
+\setCJKmainfont[
+BoldFont={WenQuanYi Zen Hei:style=Regular},
+ItalicFont={AR PL KaitiM GB:style=Regular}]
+{AR PL UMing CN:style=Light}
+\setCJKsansfont{WenQuanYi Zen Hei Sharp:style=Regular}
+\setCJKmonofont{WenQuanYi Zen Hei Mono:style=Regular}
+\tikzset{myfont/.style={font=\sffamily\small},}
+
+\title{Assignment 2:Translation of chapters in \textit{An Introduction to Scientific Computing: Twelve Computational Projects Solved with MATLAB} by Ian Gladwell}
+
+
+\author{Xu Yang \\ 3220102703 Computer Science}
+
+\begin{document}
+
+\maketitle
+
+
+作业2：完成《An Introduction to Scientific Computing: Twelve Computational Projects Solved with MATLAB》12.2和12.4的翻译\cite{intro}
+\section{12.2 二维不可压缩情形的Navier-Stokes方程}
+由不可压缩的液体形成的二维流场可以由速度向量$q = (u(x,y),v(x,y))\in \mathbb{R}^2 $ 
+和压强函数$p(x,y)\in \mathbb{R}$ 完全地描述。这些函数是一个下述守恒定律的解（比如说，Hirsch [1988]）：
+\begin{itemize}
+\item   质量守恒：
+        \begin{equation} \label{eq:div}
+            div(q)=0,
+        \end{equation}
+或者，把散度算子\footnote{我们在此回忆微分算子（散度、梯度以及Laplacian算子）：如果$v=(v_x,v_y):\mathbb{R}^2 \longmapsto \mathbb{R}^2$且$\phi:\mathbb{R}^2 \longmapsto \mathbb{R}$，那么$div(v)=\frac{\partial v_x}{\partial x}+\frac{\partial v_y}{\partial y},\mathcal{G}\phi=(\frac{\partial\phi}{\partial x},\frac{\partial\phi}{\partial y}), \Delta \phi=div(\mathcal{G\phi}=\frac{\partial^2\phi}{\partial x^2}+\frac{\partial^2\phi}{\partial y^2})$且$\Delta v=(\Delta v_x,\Delta v_y)$}写成显式的形式：
+        \begin{equation} \label{eq:div2}
+            \frac{\partial u}{\partial x}+\frac{\partial v}{\partial y}=0.
+        \end{equation}
+\item   动量守恒方程（写成紧凑形式\footnote{我们用$\bigotimes$表示张量乘积}）：
+        \begin{equation} \label{eq:momentum}
+            \frac{\partial q}{\partial t}+div(q\otimes q)=-\mathcal{G}p +\frac{1}{Re} \Delta q,
+        \end{equation}
+或者，写成显式形式：
+        \begin{equation} \label{eq:momentum2}
+            \begin{cases}
+            
+            \frac{\partial u}{\partial t}+\frac{\partial u^2}{\partial x}+\frac{\partial uv}{\partial y}=-\frac{\partial p}{\partial x}+\frac{1}{Re}(\frac{\partial^2 u}{\partial x^2}+\frac{\partial^2 u}{\partial y^2})\\
+            \frac{\partial v}{\partial t}+\frac{uv}{x}+\frac{\partial v^2}{\partial y}=-\frac{\partial p}{\partial y}+\frac{1}{Re}(\frac{\partial^2 v}{\partial x^2}+\frac{\partial^2 u}{\partial y^2})\\
+            \end{cases}
+        \end{equation} 
+\end{itemize}
+ 前述的方程是没有量纲的形式（采用下述的标度变换后的变量）：
+\begin{equation}
+x=\frac{x^*}{L},y=\frac{y^*}{L},u=\frac{u^*}{V_0},v=\frac{v^*}{V_0},t=\frac{t^*}{L/V_0}, p=\frac{p^*}{(\rho_0 V_0^2)}
+\end{equation}
+其中，上标（star）表示含有物理单位的变量。常数$L,V_0$分别是参考长度和速度。无量纲数$Re$是$Reynolds$数，它量化了流场中惯性（或对流）的相对重要性的项和粘度（或扩散）\footnote{描述对流和扩散的模型标量方程在第一章有作讨论}的项：
+\begin{equation}
+Re=\frac{V_0 L}{\nu}    
+\end{equation}
+其中$\nu$表示运动粘性系数。
+总结一下，在本项目中可以被数值求解的Navier-Stokes偏微分方程系统是由\ref{eq:div2}和\ref{eq:momentum2}确定的；
+初始条件（在$t=0$时）和边界条件将会在接下来的小节中讨论。
+\section{12.4 计算域，交错格子以及边界条件}
+如果我们考虑一个带有处处具有周期边界条件的长方形的域$L_x \times L_y$，(见图像)，那么数值求解Navier-Stokes方程将会被极大的简化。速度$q(x,y)$和压强$p(x,y)$场的周期性在数学上被表示为
+\begin{equation}
+q(0,y)=q(L_x,y),p(0,y)=p(L_x,y), \forall y\in [0,L_y]
+\end{equation}
+\begin{equation}
+q(x,0)=q(x,L_y),p(x,0)=p(x,L_y), \forall x\in [0,L_x]
+\end{equation}
+会被计算的点分布在域内的均匀分布的交错网格上。由于在我们的方法中，不是所有的变量都分布在同一个格子内，我们首先定义一个\textit{初级}格子
+（见），通过选取$x$方向的$n_x$个计算点（$y$方向同理,选取$n_y$个）：
+\begin{align}
+    x_c(i)=(i-1)\delta x, \delta x=\frac{L_x}{n_x-1}, i=1,2,...,n_x,\\
+    y_c(j)=(j-1)\delta y, \delta y=\frac{L_y}{n_y-1}, j=1,2,...,n_y.
+\end{align}
+%variables!;
+%draw!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+\begin{figure}
+    \centering
+    \begin{tikzpicture}[myfont]
+      \draw[red] (-3.9,0) rectangle(-0.1,3.9);
+      \draw (-4,0) -- (0,0) node[right] {$L_x$};
+      \draw (-4,0) -- (-4,4) node[above] {$L_y$};
+      \node[below] at (-4,0) {0};
+      \node[left] at (-4,0) {0};
+      \node[rotate=90] at (-4.2,2) {$Y$};
+      \node at (-2,-0.2) {$X$};
+
+      
+      \draw(-5,-2) rectangle(8.1,4.8);
+
+      \draw[<->,thick] (-3.9,2) -- (-3,2);
+      \node[above right] at (-3.5,2){$periodicity$};
+      \draw[<->,thick] (-0.5,2) -- (0.5,2);
+      \node[above right] at (-0.2,2) {$periodicity$};
+      \draw[<->,thick] (-2,3) -- (-2,3.9);
+      \node[below right] at (-2,3.9) {$periodicity$};
+      \draw[<->,thick] (-2,0) -- (-2,1);
+      \node[above right] at (-2,0.1) {$periodicity$};
+
+
+      \draw[green] (3,0) rectangle(6.9,3.9);
+      \draw (3,0) -- (7.5,0) node[right] {$L_x$};
+      \draw (3,0) -- (3,4) node[above] {$L_y$};
+
+      \draw[dashed] (3,2) -- (7,2);
+      \node[left] at (3,2) {$y_m(j)$};
+      \draw[dashed] (5,0) -- (5,4);
+      \node[below,rotate=90] at (4.8,-1) {$x_m(i)$};
+      \draw[green] (3,2.7) -- (6.9,2.7);
+      \node[left] at (3,2.7) {$y_c(j+1)$};
+      \draw[green] (3,1.3) -- (6.9,1.3);
+      \node[left] at(3,1.3) {$y_c(j)$};
+      \draw[green] (5.7,0) -- (5.7,3.9);
+      \node[below,rotate=90] at(5.5,-1) {$x_c(i+1)$};
+      \draw[green] (4.3,0) -- (4.3,3.9);
+      \node[below,rotate=90] at(4.1,-1) {$x_c(i)$};
+
+      \draw (5,2) circle[radius=1pt];
+      \node[above right] at (5,2) {$p(i,j)$};
+      \draw (4.3,2) circle[radius=1pt];
+      \node[above left] at (4.3,2) {$u(i,j)$};
+      \draw (5,1.3) circle[radius=1pt];
+      \node[below right] at (5,1.3) {$v(i,j)$};
+      
+      \node[below] at(3,0) {0};
+      \node[left] at(3,0){0};
+      
+      
+    \end{tikzpicture}
+    \caption{图 计算域、交错网和边界条件}
+  \label{fi}
+\end{figure}
+%end draw TAT
+一个\textit{二阶}的格子由初级格子的中心点确定：
+\begin{align}
+    x_m(i)=(i-\frac{1}{2})\delta x, i=1,2,...,n_xm,\\
+    y_m(j)=(j-\frac{1}{2})\delta y, j=1,2,...,n_ym.
+\end{align}
+这里我们用到了缩写记号$n_{xm}=n_x-1,n_{ym}=n_y-1$。在一个计算单元（定义为长方形$[x_c(i),x_c(i+1)]\times[y_c(i),y_c(i+1)]$）
+中，未知变量u,v,p将会被计算为空间中的近似解：
+\begin{itemize}
+    \item $u(i,j)\approx u(x_c(i),y_m(j)) $（单元的西面），
+    \item  $v(i,j)\approx v(x_m(i),y_c(j))$（单元的南面），
+    \item  $p(i,j)\approx p(x_m(i),y_m(j))$（单元的中心）。
+\end{itemize}
+这样交错的分布的变量具有将压强和速度强耦合的优势。它也有助于（请见章末的参考文献）减少稳定性问题以及收敛中的一致分配（因为速度和压强的数值解在同一个单元被计算）
+
+\bibliography{reference}
+\bibliographystyle{plain}
+\end{document}
