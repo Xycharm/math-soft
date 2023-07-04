@@ -1,3 +1,4 @@
+all: template.pdf
 
 template.pdf: navier-stokes.tex
 	xelatex navier-stokes.tex

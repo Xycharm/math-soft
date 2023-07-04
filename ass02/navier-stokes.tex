@@ -6,6 +6,7 @@
 \usepackage{amsmath} % AMS 的数学符号
 \usepackage{amsfonts}
 \usepackage{tikz}
+\usepackage{caption}
 % 自定义字体
 % 如果使用 ctex 字体，注释掉以下部分.
 \setCJKmainfont[
@@ -64,7 +65,7 @@ Re=\frac{V_0 L}{\nu}
 总结一下，在本项目中可以被数值求解的Navier-Stokes偏微分方程系统是由\ref{eq:div2}和\ref{eq:momentum2}确定的；
 初始条件（在$t=0$时）和边界条件将会在接下来的小节中讨论。
 \section{12.4 计算域，交错格子以及边界条件}
-如果我们考虑一个带有处处具有周期边界条件的长方形的域$L_x \times L_y$，(见图像)，那么数值求解Navier-Stokes方程将会被极大的简化。速度$q(x,y)$和压强$p(x,y)$场的周期性在数学上被表示为
+如果我们考虑一个带有处处具有周期边界条件的长方形的域$L_x \times L_y$，(见图像\ref{fig:1})，那么数值求解Navier-Stokes方程将会被极大的简化。速度$q(x,y)$和压强$p(x,y)$场的周期性在数学上被表示为
 \begin{equation}
 q(0,y)=q(L_x,y),p(0,y)=p(L_x,y), \forall y\in [0,L_y]
 \end{equation}
@@ -72,7 +73,7 @@ q(0,y)=q(L_x,y),p(0,y)=p(L_x,y), \forall y\in [0,L_y]
 q(x,0)=q(x,L_y),p(x,0)=p(x,L_y), \forall x\in [0,L_x]
 \end{equation}
 会被计算的点分布在域内的均匀分布的交错网格上。由于在我们的方法中，不是所有的变量都分布在同一个格子内，我们首先定义一个\textit{初级}格子
-（见），通过选取$x$方向的$n_x$个计算点（$y$方向同理,选取$n_y$个）：
+（见\ref{fig:1}），通过选取$x$方向的$n_x$个计算点（$y$方向同理,选取$n_y$个）：
 \begin{align}
     x_c(i)=(i-1)\delta x, \delta x=\frac{L_x}{n_x-1}, i=1,2,...,n_x,\\
     y_c(j)=(j-1)\delta y, \delta y=\frac{L_y}{n_y-1}, j=1,2,...,n_y.
@@ -132,7 +133,7 @@ q(x,0)=q(x,L_y),p(x,0)=p(x,L_y), \forall x\in [0,L_x]
       
       
     \end{tikzpicture}
-    \caption{图 计算域、交错网和边界条件}
+    \caption{图 计算域、交错网和边界条件}\label{fig:1}
   \label{fi}
 \end{figure}
 %end draw TAT
