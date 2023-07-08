@@ -1,0 +1,8 @@
+/home/xymm/Desktop/ass06/CMakeFiles/MyProject.dir
+/home/xymm/Desktop/ass06/CMakeFiles/docs.dir
+/home/xymm/Desktop/ass06/CMakeFiles/edit_cache.dir
+/home/xymm/Desktop/ass06/CMakeFiles/rebuild_cache.dir
+/home/xymm/Desktop/ass06/CMakeFiles/list_install_components.dir
+/home/xymm/Desktop/ass06/CMakeFiles/install.dir
+/home/xymm/Desktop/ass06/CMakeFiles/install/local.dir
+/home/xymm/Desktop/ass06/CMakeFiles/install/strip.dir
