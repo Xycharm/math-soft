@@ -43,7 +43,7 @@ ItalicFont={AR PL KaitiM GB:style=Regular}]
  -\Delta u=f\quad\quad\quad\quad\mathrm{in~}\Omega
 \end{equation}
 \begin{equation}
- u=0\quad\quad\quad\quad\mathrm{on~\partial\Omega}
+ u=0\quad\quad\quad\quad\mathrm{on~\partial}\Omega
 \end{equation}
 我们将在正方形域上求解这个方程，$\Omega=[-1,1]^2$，我们已经在step-1和step-2中学习了如何生成网格，并赋予单元自由度。在这个程序中，我们将只考虑$f(x)=1$的特殊情况，在下一个教程程序中再来讨论如何实现更普遍的情况，即step-4。\\
 如果你学过有限元方法的基础知识，就会知道我们要用有限维近似来近似解u。具体来说，我们首先需要推导出上述方程的弱形式，可以通过将试函数$\phi$左乘方程（左乘是为了方便编程，右乘当然也没问题，但是编程会变得复杂），并在域$\boldsymbol{\Omega}$上积分来获得：
@@ -236,7 +236,15 @@ deal.II通过命名空间types中的别名定义了一些整数(integral)类型�
 
     types::global\_dof\_index并不是这个命名空间中唯一定义的类型。相反，有一整个系列，包括 types::subdomain\_id, types::boundary\_id, 和types::material\_id。所有这些都是整数数据类型的别名，但是，正如上面所解释的，它们被用于整个库中，以便（i）变量的意图变得更容易辨别，以及（ii）如果有必要，可以将实际的类型改为更大的类型，而不必翻阅整个库；比如找出unsigned int的特定使用是否对应于一个材料指标。
 \section{描述}
-step-3是deal.II中的第一个拉普拉斯求解器。这个例程将会介绍有限元程序的一般结构，展示了如何组装线性系统，如何解这个线性方程，然后从中生成图形输出源文件（用于后处理）。
+step-3是deal.II中的第一个拉普拉斯求解器。这个例程将会介绍有限元程序的一般结构，展示了如何组装线性系统，如何解这个线性方程，然后从中生成图形输出源文件（用于后处理）。\\
+计算的问题：
+\begin{equation}
+ -\Delta u=f\quad\quad\quad\quad\mathrm{in~}\Omega
+\end{equation}
+\begin{equation}
+ u=0\quad\quad\quad\quad\mathrm{on~\partial}\Omega
+\end{equation}
+其中$\Omega=[-1,1]^2，\textbf{f}(\textbf{x})=1$
 \begin{figure}[htbp]
       \centering
       \includegraphics[scale=0.5]{./solution.eps}

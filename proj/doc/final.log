@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2022/dev/Debian) (preloaded format=xelatex 2023.7.3)  10 JUL 2023 14:59
+This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2022/dev/Debian) (preloaded format=xelatex 2023.7.3)  10 JUL 2023 15:16
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -491,9 +491,6 @@ Unknown feature `style=Light/OT' in font `AR PL UMing CN'.
 Unknown feature `style=Regular/OT' in font `WenQuanYi Zen Hei'.
 Unknown feature `style=Light/OT' in font `AR PL UMing CN'.
 
-Missing character: There is no 
- (U+000A) in font [lmroman10-regular]:mapping=tex-text;!
-
 Underfull \hbox (badness 10000) in paragraph at lines 60--64
 
  []
@@ -543,10 +540,12 @@ Light(0)/m/n/10.53937 。|
  []
 
 [10]
+Missing character: There is no ， (U+FF0C) in font [lmroman10-regular]:mapping=t
+ex-text;!
 File: ./solution.eps Graphic file (type eps)
 <./solution.eps>
 
-Overfull \hbox (17.85562pt too wide) in paragraph at lines 242--243
+Overfull \hbox (17.85562pt too wide) in paragraph at lines 250--251
  [][] 
  []
 
@@ -556,11 +555,11 @@ LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
  ) 
 Here is how much of TeX's memory you used:
- 10173 strings out of 478190
- 262440 string characters out of 5854814
+ 10181 strings out of 478190
+ 262652 string characters out of 5854814
  748372 words of memory out of 5000000
- 30615 multiletter control sequences out of 15000+600000
- 481382 words of font info for 99 fonts, out of 8000000 for 9000
+ 30618 multiletter control sequences out of 15000+600000
+ 481406 words of font info for 102 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
  89i,8n,97p,619b,1682s stack positions out of 5000i,500n,10000p,200000b,80000s
 
